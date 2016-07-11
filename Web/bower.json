@@ -1,0 +1,15 @@
+{
+  "name": "arroseur",
+  "description": "Arroseur Web Client",
+  "main": "index.html",
+  "authors": [
+    "cgailly <cgailly@hotmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/cgailly/wateringSystem",
+  "private": true,
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "angular": "^1.5.7"
+  }
+}

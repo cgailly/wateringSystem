@@ -46,7 +46,7 @@ app.controller("myCtrl", function ($scope) {
         }
         setTimeout($scope.runCheckButtonState.bind($scope), 3000);
     },
-    &
+    
      this.$onInit = function () {
          $scope.runCheckIsHWConnected();
          $scope.runCheckButtonState();

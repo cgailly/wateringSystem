@@ -66,6 +66,7 @@
     <Content Include="server\urlHelper.js" />
     <Content Include="server\wateringSystem.js" />
     <Content Include="Sketch\sketch\sketch.ino" />
+    <Content Include="WateringSystem.sln" />
     <Content Include="Web\css\default.css" />
     <Content Include="Web\images\LockScreenLogo.scale-200.png" />
     <Content Include="Web\images\SplashScreen.scale-200.png" />

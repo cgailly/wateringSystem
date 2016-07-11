@@ -1,19 +1,7 @@
 ﻿<!DOCTYPE html>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
 <html lang="en-US">
-<script src="libraries/jquery/v3.0.0/jquery-3.0.0.min.js"></script>
-<script src="libraries/angular/v1.5.7/angular.min.js"></script>
-<link rel="stylesheet" href="libraries/jquery-ui/v1.9.2/css/base/jquery-ui-1.9.2.custom.min.css">
-<script src="libraries/jquery-ui/v1.9.2/js/jquery-ui-1.9.2.custom.min.js"></script>
-<script>
-  //$(function() {
-  //  $( "#check" ).button();
-  //});
-</script>
-<style>
-    #format {
-        margin-top: 2em;
-    }
-</style>
 <body>
     <div ng-app="myApp" ng-controller="myCtrl" >
         <div><label>Etat de l'arroseur: {{isSystemConnected | formatHWConnected}}</label></div>
