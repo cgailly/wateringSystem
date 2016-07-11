@@ -1,18 +1,23 @@
 ﻿var app = angular.module("myApp", []);
+
 app.controller("myCtrl", function ($scope) {
 
-   
-    $scope.wateringState = false;
+
+    $scope.wateringState = -1;
     $scope.isSystemConnected = -1;
 
     $scope.onClicked = function (event) {
         var scope = $scope;
-        var value = !this.wateringState ? '1' : '0';
+        var newState = 1;
+        if (this.buttonState == 1) {
+            newState = 0;
+        }
+        this.buttonState = newState;
         $.ajax({
-            url: '/api/wateringSystem/state/' + value,
+            url: '/api/wateringSystem/relay/' + this.buttonState,
             type: 'PUT',
         }).done(function () {
-            this.wateringState = !this.wateringState;
+
             this.$apply();
         }.bind($scope)).fail(function () { alert('Failed'); });
     };
@@ -28,17 +33,37 @@ app.controller("myCtrl", function ($scope) {
         setTimeout($scope.runCheckIsHWConnected.bind($scope), 3000);
     },
 
+    $scope.runCheckButtonState = function () {
+        if (this.isSystemConnected > 0) {
+            $.ajax({
+                url: '/api/wateringSystem/relay/',
+                type: 'Get',
+            }).done(function (response) {
+                var results = JSON.parse(response);
+                this.buttonState = parseInt(results[0]);
+                this.$apply();
+            }.bind($scope)).fail(function () { this.buttonState = 0; this.$apply(); });
+        }
+        setTimeout($scope.runCheckButtonState.bind($scope), 3000);
+    },
+    &
      this.$onInit = function () {
-         setTimeout($scope.runCheckIsHWConnected.bind($scope), 3000);
+         $scope.runCheckIsHWConnected();
+         $scope.runCheckButtonState();
      };
 });
 
 app.filter('formatOnLabel', function () {
-    return function (checked) {
-        if (checked) {
-            return "On";
+    return function (state) {
+        switch (state) {
+            case 0:
+                return "Start";
+            case 1:
+                return "Stop";
         }
-        return "Off";
+
+        return "Start";
+
     };
 });
 
@@ -48,7 +73,7 @@ app.filter('formatHWConnected', function () {
             case "0":
                 return "Not connected";
             case "1":
-                return "Conneceted";
+                return "Connected";
             default:
                 return "N/A";
         }

@@ -61,9 +61,11 @@
     <Content Include="README.md" />
     <Content Include="server.js" />
     <Content Include="server\blynkProxy.js" />
+    <Content Include="server\mock\mock.js" />
     <Content Include="server\routes.js" />
     <Content Include="server\urlHelper.js" />
     <Content Include="server\wateringSystem.js" />
+    <Content Include="Sketch\sketch\sketch.ino" />
     <Content Include="Web\css\default.css" />
     <Content Include="Web\images\LockScreenLogo.scale-200.png" />
     <Content Include="Web\images\SplashScreen.scale-200.png" />

@@ -1,9 +1,14 @@
 ﻿var config = require('./config');
+if (config.mock) {
+    console.log("mock enabled");
+    var nock = require('./server/mock/mock');
+}
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var path = require('path');
+
 console.log("__dirname " + __dirname);
 var express = require('express');
 this.app = express();

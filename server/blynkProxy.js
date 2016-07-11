@@ -15,14 +15,23 @@ var blynkProxy = {
     },
 
     setPinValue: function (pin, value) {
-        var data = '[ "' + value +  ' " ]';
+        var values = [value];
+        var data = JSON.stringify(values);
         var request = {
             'verb': "PUT",
             'url': this.getRootUrl() + "pin/" + pin,
             'data' : data
         };
         return urlHelper.callUrl(request);
-      }
+    },
+
+    getPinValue: function (pin) {
+        var request = {
+            'verb': "GET",
+            'url': this.getRootUrl() + "pin/" + pin,
+        };
+        return urlHelper.callUrl(request);
+},
 };
 
 module.exports = blynkProxy;

@@ -18,7 +18,7 @@
     <div ng-app="myApp" ng-controller="myCtrl" >
         <div><label>Etat de l'arroseur: {{isSystemConnected | formatHWConnected}}</label></div>
         <br />
-        <div><label>Démarrer l'arroseur: </label><button ng-click="onClicked()">{{wateringState | formatOnLabel }}</button></div>     
+        <div><label>Démarrer l'arroseur: </label><button ng-click="onClicked()" enabled="{{isSystemConnected == 1 }}">{{buttonState | formatOnLabel }}</button></div>     
     </div>
  <script src="js/controller.js"></script>
 </body>
