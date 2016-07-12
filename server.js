@@ -23,3 +23,5 @@ var routes = require('./server/routes');
 this.routes = routes(this.app);
 this.app.listen(config.web.port);
 console.log("Listen " + config.web.port);
+
+var mongoDbProxy = require('./server/mongoDb/mongoDbProxy');

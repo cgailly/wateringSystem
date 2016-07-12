@@ -42,12 +42,6 @@ module.exports = {
 
     getRelayValue: function (req, res) {
         try {
-            console.log("[wateringSystem - getRelayValue()]'");
-            if (req == undefined) {
-                res.status(500);
-                console.error("[Get] /api/wateringSystem/relay/ error bad request");
-                return new Error("empty content");
-            }
             blynkProxy.getPinValue("V1").then(function (result) {
                 res.send(result);
             }).catch(function (error) { console.log(error); res.status(500) });
@@ -56,5 +50,17 @@ module.exports = {
             console.error(e);
             return new Error(e);
         }
+    },
+
+    getRainDetector: function (req, res) {
+    try {
+        blynkProxy.getPinValue("A15").then(function (result) {
+            res.send(result);
+        }).catch(function (error) { console.log(error); res.status(500) });
+    } catch (e) {
+        res.status(500);
+        console.error(e);
+        return new Error(e);
     }
+}
 }

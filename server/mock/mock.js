@@ -49,6 +49,14 @@ var mockBlynk = {
                         return JSON.stringify(values);
                     }.bind(this));
 
+        this.mockGetValueV1 = nock("http://" + config.Blynk.server + ":" + config.Blynk.port).persist()
+            .get("/" + config.Blynk.authToken + '/pin/A1')
+            .reply(200, function () {
+                var values = ["" + 876  ];
+                return JSON.stringify(values);
+            }.bind(this));
+
+
     }
 
 

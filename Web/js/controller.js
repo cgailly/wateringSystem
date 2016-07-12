@@ -5,6 +5,7 @@ app.controller("myCtrl", function ($scope) {
 
     $scope.wateringState = -1;
     $scope.isSystemConnected = -1;
+    $scope.rainValue = -1;
 
     $scope.onClicked = function (event) {
         var scope = $scope;
@@ -22,7 +23,7 @@ app.controller("myCtrl", function ($scope) {
         }.bind($scope)).fail(function () { alert('Failed'); });
     };
 
-    $scope.runCheckIsHWConnected = function () {
+    $scope.runThread = function () {
         $.ajax({
             url: '/api/wateringSystem/connected/',
             type: 'Get',
@@ -30,10 +31,7 @@ app.controller("myCtrl", function ($scope) {
             this.isSystemConnected = response;
             this.$apply();
         }.bind($scope)).fail(function () { this.isSystemConnected = -1; this.$apply(); });
-        setTimeout($scope.runCheckIsHWConnected.bind($scope), 3000);
-    },
 
-    $scope.runCheckButtonState = function () {
         if (this.isSystemConnected > 0) {
             $.ajax({
                 url: '/api/wateringSystem/relay/',
@@ -44,12 +42,24 @@ app.controller("myCtrl", function ($scope) {
                 this.$apply();
             }.bind($scope)).fail(function () { this.buttonState = 0; this.$apply(); });
         }
-        setTimeout($scope.runCheckButtonState.bind($scope), 3000);
+
+
+        if (this.isSystemConnected > 0) {
+            $.ajax({
+                url: '/api/wateringSystem/rainDetector/',
+                type: 'Get',
+            }).done(function (response) {
+                var results = JSON.parse(response);
+                this.rainValue = parseInt(results[0]);
+                this.$apply();
+            }.bind($scope)).fail(function () { this.buttonState = 0; this.$apply(); });
+        }
+        setTimeout($scope.runThread.bind($scope), 3000);
     },
+
     
      this.$onInit = function () {
-         $scope.runCheckIsHWConnected();
-         $scope.runCheckButtonState();
+         $scope.runThread();
      };
 });
 
