@@ -7,5 +7,8 @@ config.Blynk.port = 8080;
 config.Blynk.server = "40.127.133.115";
 config.Blynk.authToken = "b53c5fe6c4494e74be19950dda122723";
 
+config.mongoDb = {};
+config.mongoDb.url = 'mongodb://localhost:27017/wateringSystem';
+
  
 module.exports = config;

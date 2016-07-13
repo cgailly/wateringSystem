@@ -52,9 +52,9 @@ module.exports = {
         }
     },
 
-    getRainDetector: function (req, res) {
+    getRainDetectorValue: function (req, res) {
     try {
-        blynkProxy.getPinValue("A15").then(function (result) {
+        blynkProxy.getPinValue("V2").then(function (result) {
             res.send(result);
         }).catch(function (error) { console.log(error); res.status(500) });
     } catch (e) {

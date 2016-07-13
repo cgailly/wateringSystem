@@ -5,7 +5,7 @@ SoftwareSerial SwSerial(2, 3); // RX, TX
 char auth[] = "b53c5fe6c4494e74be19950dda122723";
 long startTime = 0;
 int pinRelay = 8;
-//int rainPin = A1;
+int rainPin = A1;
 int rainDigitalIn = 2;
 
 // Attach BUTTON_PIN interrupt to our handler
@@ -15,7 +15,9 @@ void setup()
   Blynk.begin(auth);
   pinMode(pinRelay, OUTPUT);
   digitalWrite(pinRelay, LOW);
-  //pinMode(rainDigitalIn,INPUT);
+  pinMode(rainDigitalIn,INPUT);
+  pinMode(rainPin,INPUT);
+  
 }
 
 void startTimer ()
@@ -50,13 +52,21 @@ void checkTimer()
     startTime = 0;
   }
 }
-
+int n = 0;
+long lastCheck = 0;
 void checkIsRaining()
 {
-//  int rainValue = analogRead(rainPin);
-//  bool isRaining = !(digitalRead(rainDigitalIn));
-//  Blynk.virtualWrite(V2, isRaining?HIGH:LOW);
-//  Blynk.virtualWrite(V3, rainValue);
+  long current = millis();
+
+  int rainValue = analogRead(rainPin);
+  bool isRaining = !(digitalRead(rainDigitalIn));
+  n = (n+1)%1000;
+  
+   if(current - lastCheck > 5000) {
+    lastCheck = current;
+    Blynk.virtualWrite(V2, rainValue);
+    startTime = 0;
+  }
 
 }
 

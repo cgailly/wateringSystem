@@ -1,23 +1,94 @@
-﻿//lets require/import the mongodb native drivers.
-var mongodb = require('mongodb');
+﻿var config = require('../../config');
+var mongoose = require('mongoose');
+var mongoDbProxy = {
 
-//We need to work with "MongoClient" interface in order to connect to a mongodb server.
-var MongoClient = mongodb.MongoClient;
+    init: function () {
+        this.connect();
+        this.createModels();
+    },
 
-// Connection URL. This is where your mongodb server is running.
-var url = 'mongodb://localhost:27017/wateringSystem';
+    createModels: function () {
+        var rainSensorValuesSchema = new mongoose.Schema({
+            rainSensorValue: Number,
+            date: { type: Date, default: Date.now },
+        });
 
-// Use connect method to connect to the Server
-MongoClient.connect(url, function (err, db) {
-    if (err) {
-        console.log('Unable to connect to the mongoDB server. Error:', err);
-    } else {
-        //HURRAY!! We are connected. :)
-        console.log('Connection established to', url);
+        this.rainSensorValuesModel = mongoose.model(this.getRainValuesModelName(), rainSensorValuesSchema);
+    },
 
-        // do some work here with the database.
+    getRainValuesModelName: function () {
+        if (config.mock) {
+            return 'rainValues_mock'
+        }
+        return 'rainValues'
+    },
 
-        //Close connection
-        db.close();
+    connect: function () {
+        this.db = mongoose.connection;
+
+        this.db.on('connecting', function () {
+            console.log('connecting to MongoDB...');
+        });
+
+        this.db.on('error', function (error) {
+            console.error('Error in MongoDb connection: ' + error);
+            mongoose.disconnect();
+        });
+        this.db.on('connected', function () {
+            console.log('MongoDB connected!');
+        });
+        this.db.once('open', function () {
+            console.log('MongoDB connection opened!');
+        });
+        this.db.on('reconnected', function () {
+            console.log('MongoDB reconnected!');
+        });
+        this.db.on('disconnected', function () {
+            console.log('MongoDB disconnected!');
+            mongoose.connect(config.mongoDb.url, { server: { auto_reconnect: true } });
+        });
+        mongoose.connect(config.mongoDb.url, { server: { auto_reconnect: true } });
+    },
+
+    addRainSensorValue: function (value) {
+        return new Promise(function (resolve, reject) {
+            console.log("Entering");
+            var sensorValue = new this.rainSensorValuesModel({ 'rainSensorValue': value });
+            console.log("Saving");
+            sensorValue.save(function (error) {
+                console.log("SAVE Is DONE");
+                if (error) {
+                    console.log("Error :" + error);
+                    console.log("calling reject");
+                    reject(error);
+                    console.log("reject called");
+                    return;
+                }
+                
+                resolve();
+            });
+        }.bind(this));
+    },
+
+    getRainValues : function() {
+        return new Promise(function (resolve, reject) {
+            console.log("OK"); console.log("Creating query");
+            var query = this.rainSensorValuesModel.find(null).limit(100);
+            query.exec(
+                    function (err, result) {
+                        console.log("OK"); console.log("Query completed");
+                        if (err) { reject(err); }
+                        resolve(result);
+                    }
+                    );
+            console.log("OK"); console.log("Query executed");
+        }.bind(this));
     }
-});
+
+}
+
+mongoDbProxy.init();
+
+module.exports = mongoDbProxy;
+
+

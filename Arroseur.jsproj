@@ -65,9 +65,11 @@
     <Content Include="server\mongoDb\mongoDbProxy.js" />
     <Content Include="server\recorders\rainRecorder.js" />
     <Content Include="server\routes.js" />
+    <Content Include="server\test\testMongoDbProxy.js" />
     <Content Include="server\urlHelper.js" />
     <Content Include="server\wateringSystem.js" />
     <Content Include="Sketch\sketch\sketch.ino" />
+    <Content Include="Start.bat" />
     <Content Include="WateringSystem.sln" />
     <Content Include="Web\css\default.css" />
     <Content Include="Web\images\LockScreenLogo.scale-200.png" />
