@@ -1,24 +1,38 @@
-#include <SoftwareSerial.h>
-SoftwareSerial SwSerial(2, 3); // RX, TX
-#define BLYNK_PRINT SwSerial
-#include <BlynkSimpleSerial.h>
+#define BLYNK_PRINT Serial    // Comment this out to disable prints and save space
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+
+
 char auth[] = "b53c5fe6c4494e74be19950dda122723";
 long startTime = 0;
-int pinRelay = 8;
-int rainPin = A1;
-int rainDigitalIn = 2;
+int pinRelay = D8;
+int pinDebug = D3;
 
+int rainPin = A0;
+int rainDigitalIn = D2;
+
+
+
+void DebugWithLed(int n) {
+  delay(1000);
+  for(int i = 0; i < n; i++) {
+    digitalWrite(pinDebug, HIGH);
+    delay(500);
+    digitalWrite(pinDebug, LOW);
+    delay(500);
+  }
+
+}
 // Attach BUTTON_PIN interrupt to our handler
 void setup()
 {
   Serial.begin(9600);
-  Blynk.begin(auth);
-  pinMode(pinRelay, OUTPUT);
-  digitalWrite(pinRelay, LOW);
-  pinMode(rainDigitalIn,INPUT);
-  pinMode(rainPin,INPUT);
-  
+  delay(10);
+  Serial.println("Rock'n roll");
+ Blynk.begin(auth, "XT1032 5747", "", "40.127.133.115", 8442);
 }
+
+
 
 void startTimer ()
 {
@@ -72,10 +86,12 @@ void checkIsRaining()
 
 void loop()
 {
+  DebugWithLed(1);
   Blynk.run();
   checkTimer();
   checkIsRaining();
 }
+
 
 
 
