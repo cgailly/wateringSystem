@@ -1,14 +1,13 @@
 ﻿var config = {};
-config.mock = true;
+config.mock = false;
 config.web = {};
 config.Blynk = {};
 config.web.port = 8081;
 config.Blynk.port = 8080;
 config.Blynk.server = "13.74.253.190";
-config.Blynk.authToken = "b92369a1ae554debbfcaa5f3f9bc7bb7";
+config.Blynk.authToken = "b53c5fe6c4494e74be19950dda122723";
 
 config.mongoDb = {};
-config.mongoDb.url = 'mongodb://localhost:27017/wateringSystem';
+config.mongoDb.url = 'mongodb://koolcenter:aze123AZE@ds011903.mlab.com:11903/koolcenter';
 
- 
 module.exports = config;

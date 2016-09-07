@@ -47,9 +47,9 @@ var mongoDbProxy = {
         });
         this.db.on('disconnected', function () {
             console.log('MongoDB disconnected!');
-            mongoose.connect(config.mongoDb.url, { server: { auto_reconnect: true } });
+            mongoose.connect('mongodb://koolcenter:aze123AZE@ds011903.mlab.com:11903/koolcenter');
         });
-        mongoose.connect(config.mongoDb.url, { server: { auto_reconnect: true } });
+        mongoose.connect('mongodb://koolcenter:aze123AZE@ds011903.mlab.com:11903/koolcenter'); 
     },
 
     addRainSensorValue: function (value) {
@@ -97,5 +97,3 @@ var mongoDbProxy = {
 mongoDbProxy.init();
 
 module.exports = mongoDbProxy;
-
-
