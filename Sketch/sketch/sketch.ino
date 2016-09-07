@@ -3,33 +3,25 @@
 #include <BlynkSimpleEsp8266.h>
 
 
-char auth[] = "b53c5fe6c4494e74be19950dda122723";
+char auth[] = "b92369a1ae554debbfcaa5f3f9bc7bb7";
 long startTime = 0;
-int pinRelay = D8;
-int pinDebug = D3;
+int pinRelay = D5;
 
 int rainPin = A0;
 int rainDigitalIn = D2;
 
 
 
-void DebugWithLed(int n) {
-  delay(1000);
-  for(int i = 0; i < n; i++) {
-    digitalWrite(pinDebug, HIGH);
-    delay(500);
-    digitalWrite(pinDebug, LOW);
-    delay(500);
-  }
 
-}
 // Attach BUTTON_PIN interrupt to our handler
 void setup()
 {
   Serial.begin(9600);
-  delay(10);
   Serial.println("Rock'n roll");
- Blynk.begin(auth, "XT1032 5747", "", "40.127.133.115", 8442);
+  pinMode(D5, OUTPUT); 
+ delay(10);
+ Blynk.begin(auth, "XT1032 5747", "", "13.74.253.190", 8442);
+ 
 }
 
 
@@ -37,16 +29,19 @@ void setup()
 void startTimer ()
 {
   startTime = millis();
+  digitalWrite(pinRelay, HIGH);   
 }
 
 BLYNK_WRITE(1) 
 {
-    if (param.asInt()) {
+      if (param.asInt()) {
         //HIGH
         startTimer();
+        Serial.println("LEd ON");
         digitalWrite(pinRelay, HIGH);   
     } else {
        startTime = 0;
+       Serial.println("LEd OFF");
         digitalWrite(pinRelay, LOW); 
     }
 }
@@ -60,8 +55,11 @@ void checkTimer()
   }
 
   long current = millis();
+  long duration = current - startTime;
+  Serial.print("Duration");
   if(current - startTime > 3000) {
-    digitalWrite(pinRelay, LOW);  
+    digitalWrite(pinRelay, LOW); 
+    Serial.println("Set LEd OFF"); 
     Blynk.virtualWrite(V1, 0);
     startTime = 0;
   }
@@ -72,11 +70,14 @@ void checkIsRaining()
 {
   long current = millis();
 
-  int rainValue = analogRead(rainPin);
-  bool isRaining = !(digitalRead(rainDigitalIn));
+ 
+//  bool isRaining = !(digitalRead(rainDigitalIn));
+
   n = (n+1)%1000;
   
    if(current - lastCheck > 5000) {
+    
+     int rainValue = analogRead(rainPin);
     lastCheck = current;
     Blynk.virtualWrite(V2, rainValue);
     startTime = 0;
@@ -86,7 +87,6 @@ void checkIsRaining()
 
 void loop()
 {
-  DebugWithLed(1);
   Blynk.run();
   checkTimer();
   checkIsRaining();
