@@ -9,7 +9,7 @@ var mongoDbProxy = {
 
     createModels: function () {
         var rainSensorValuesSchema = new mongoose.Schema({
-            rainSensorValue: Number,
+            value: Number,
             date: { type: Date, default: Date.now },
         });
 
@@ -18,9 +18,11 @@ var mongoDbProxy = {
 
     getRainValuesModelName: function () {
         if (config.mock) {
-            return 'rainValues_mock'
+            console.log("[mongoDbProxy.getRainValuesModelName] model Name:" + 'rainValuesMock');
+            return 'rainValuesMock';
         }
-        return 'rainValues'
+        console.log("[mongoDbProxy.getRainValuesModelName] model Name:" + 'rainValues');
+        return 'rainValues';
     },
 
     connect: function () {
@@ -52,11 +54,8 @@ var mongoDbProxy = {
 
     addRainSensorValue: function (value) {
         return new Promise(function (resolve, reject) {
-            console.log("Entering");
-            var sensorValue = new this.rainSensorValuesModel({ 'rainSensorValue': value });
-            console.log("Saving");
+            var sensorValue = new this.rainSensorValuesModel({ 'value': value });
             sensorValue.save(function (error) {
-                console.log("SAVE Is DONE");
                 if (error) {
                     console.log("Error :" + error);
                     console.log("calling reject");
@@ -64,20 +63,28 @@ var mongoDbProxy = {
                     console.log("reject called");
                     return;
                 }
-                
+
                 resolve();
             });
         }.bind(this));
     },
 
-    getRainValues : function() {
+    getRainValues: function () {
         return new Promise(function (resolve, reject) {
             console.log("OK"); console.log("Creating query");
             var query = this.rainSensorValuesModel.find(null).limit(100);
             query.exec(
-                    function (err, result) {
+                    function (err, response) {
                         console.log("OK"); console.log("Query completed");
                         if (err) { reject(err); }
+                        var result = [];
+                        for (var i = 0; i < response.length; i++) {
+                            var entry = {
+                                date: response[i].date,
+                                value: response[i].value,
+                            }
+                            result.push(entry);
+                        }
                         resolve(result);
                     }
                     );

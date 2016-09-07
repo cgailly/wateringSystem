@@ -10,6 +10,10 @@
   "private": true,
   "dependencies": {
     "jquery": "^3.1.0",
-    "angular": "^1.5.7"
+    "angular": "^1.5.7",
+    "moment": "momentjs#^2.14.1",
+    "Materialize": "materialize#^0.97.6"
+  },
+  "resolutions": {
   }
 }

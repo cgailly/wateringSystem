@@ -1,6 +1,9 @@
 ﻿<!DOCTYPE html>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/chart.js/dist/Chart.js"></script>
+    <!--<script src="bower_components/chart.js/dist/Chart.js"></script>-->
 <html lang="en-US">
 <body>
     <div ng-app="myApp" ng-controller="myCtrl" >
@@ -8,8 +11,11 @@
         <br />
         <div><label>Démarrer l'arroseur: </label><button ng-click="onClicked()" enabled="{{isSystemConnected == 1 }}">{{buttonState | formatOnLabel }}</button></div>     
         <br />
-        <div><label>Détecteur de pluie: </label><Label>{{ rainValue}}</label></div>     
-    </div>
- <script src="js/controller.js"></script>
+        <div><label>Détecteur de pluie: </label><Label>{{ rainValue}}</label></div> 
+        <canvas id="updating-chart" width="500" height="300"></canvas>         
+        </div>
+   
+
+        <script src="js/controller.js"></script>
 </body>
 </html>

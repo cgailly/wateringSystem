@@ -8,6 +8,7 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var path = require('path');
+var rainRecorder = require("./server/recorders/rainRecorder");
 
 console.log("__dirname " + __dirname);
 var express = require('express');
